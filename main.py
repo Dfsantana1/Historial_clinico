@@ -3,6 +3,7 @@ from ventanas.mostrar import mostrar_mensaje
 from usuario import Usuario
 from doctor import Medico
 from paciente import Paciente
+
 from registros.registros import validar_credenciales
 from registros.registroMedicos import validar_credencialesM,agregar_medico
 
