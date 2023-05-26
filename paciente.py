@@ -1,0 +1,132 @@
+import tkinter as tk
+from tkinter import ttk
+import re
+from ventanas.mostrar import mostrar_mensaje
+from registros.registros import agregar_paciente
+from usuario import Usuario
+import util.generic as utl
+
+
+class Paciente(Usuario):
+    def __init__(self, identificacion, nombre, genero, direccion, contraseña, usuario, telefono, correo, fecha_nacimiento):
+        super().__init__(identificacion, nombre, genero, direccion, contraseña, usuario, "Paciente", telefono, correo)
+        self.fecha_nacimiento = fecha_nacimiento
+
+    @staticmethod
+
+    def iniciar_ventana():
+        ventana_paciente = tk.Tk()
+        ventana_paciente.title("Ventana del Paciente")
+        ventana_paciente.geometry("1600x900")
+        ventana_paciente.configure(bg="#F0F8FF")
+
+        mensaje_bienvenida = tk.Label(ventana_paciente, text=f"Bienvenido Paciente", font=("Arial", 16), bg="#F0F8FF", fg="#000000")
+        mensaje_bienvenida.pack(pady=10)
+
+        # Botones
+        btn_mostrar_historial = ttk.Button(ventana_paciente, text="Mostrar Historial Clínico", command=Paciente.mostrar_historial)
+        btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
+
+        btn_ver_horario = ttk.Button(ventana_paciente, text="Ver Horario", command=Paciente.ver_horario)
+        btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
+
+
+
+        # Agrega aquí los elementos y la lógica para la ventana del médico
+
+        ventana_paciente.mainloop()
+
+    def mostrar_historial(self):
+        # Lógica para la acción de mostrar historial clínico
+        pass
+
+    def ver_horario(self):
+        # Lógica para la acción de ver horario
+        pass
+
+
+    def registro_paciente():
+        ventana_registro_paciente = tk.Toplevel()
+        ventana_registro_paciente.title("Registro de Paciente")
+        ventana_registro_paciente.config(bg='#000000')
+        ventana_registro_paciente.resizable(width=0, height=0)
+        utl.centrar_ventana(ventana_registro_paciente, 600, 700)
+
+        logo = utl.leer_imagen("./imagenes/logo.png", (200, 400))
+        frame_principal = tk.Frame(ventana_registro_paciente, bg='#000000')
+        frame_principal.pack(fill=tk.BOTH, expand=False)
+
+        frame_logo = tk.Frame(frame_principal, bg='#F87474')
+        frame_logo.pack(side="left", padx=10, pady=10)
+
+        label = tk.Label(frame_logo, image=logo, bg='#F87474')
+        label.pack(fill=tk.BOTH, expand=True)
+
+        frame_form = tk.Frame(frame_principal, bg='#000000')
+        frame_form.pack(side="right", padx=5, pady=5, fill=tk.BOTH, expand=True)
+
+        title = tk.Label(frame_form, text="Registro de Paciente", font=('Times', 20), fg="#ffffff", bg='#000000', pady=10)
+        title.pack(fill=tk.X)
+
+        form = tk.Frame(frame_form, bg='#000000')
+        form.pack(fill=tk.BOTH, expand=True)
+
+        etiquetas = ["Identificación", "Nombre", "Género", "Dirección", "Contraseña","Confirmar Contraseña", "Usuario",
+                     "Teléfono", "Correo electrónico", "Fecha de Nacimiento"]
+        campos = []
+
+        for i, etiqueta in enumerate(etiquetas):
+            lbl = tk.Label(form, text=etiqueta, font=('Times', 8), fg="#ffffff", bg='#000000', anchor="w")
+            lbl.pack(side="top", padx=5, pady=5, fill=tk.X)
+
+            if etiqueta == "Contraseña" or etiqueta == "Confirmar Contraseña":
+                entry = ttk.Entry(form, show='*', width=2)  # Ajustar el ancho del campo de entrada
+            else:
+                entry = ttk.Entry(form, width=2)  # Ajustar el ancho del campo de entrada
+
+            entry.pack(side="top", padx=2, pady=2, fill=tk.X)
+            campos.append(entry)
+
+        def regresar():
+            ventana_registro_paciente.destroy()
+
+        def guardar_registro():
+            datos = [campo.get() for campo in campos]
+
+            if any(not dato for dato in datos):
+                mostrar_mensaje("Error", "Todos los campos son requeridos.")
+                return
+
+            if datos[4] != datos[5]:
+                mostrar_mensaje("Error", "La contraseña y la confirmación de contraseña no coinciden.")
+                return
+
+            if not re.match(r"^[^@]+@[^@]+\.[^@]+$", datos[8]):
+                mostrar_mensaje("Error", "El correo electrónico no es válido.")
+                return
+
+            if not datos[0].isdigit():
+                mostrar_mensaje("Error", "La identificación debe ser un número.")
+                return
+
+            if len(datos[4]) < 8:
+                mostrar_mensaje("Error", "La contraseña debe tener al menos 8 caracteres.")
+                return
+
+            if not datos[7].isdigit():
+                mostrar_mensaje("Error", "El teléfono debe contener solo números.")
+                return
+
+            paciente = Paciente(*datos[:4], datos[4], datos[6], datos[7], datos[8], datos[9])
+            agregar_paciente(paciente)
+            paciente.contraseña
+            ventana_registro_paciente.destroy()
+                
+        btn_guardar = tk.Button(ventana_registro_paciente, text="Guardar", command=guardar_registro, bg='#FF0000', fg='#FFFFFF')
+        btn_guardar.pack(side="top", padx=20, pady=10, fill=tk.X)
+
+        btn_regresar = tk.Button(ventana_registro_paciente, text="Regresar", command=regresar, bg='#0000FF', fg='#FFFFFF')
+        btn_regresar.pack(side="top", padx=20, pady=10, fill=tk.X)
+
+
+        ventana_registro_paciente.mainloop()
