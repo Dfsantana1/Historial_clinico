@@ -60,7 +60,7 @@ class Login:
         usuario = self.entry_usuario.get()
         contraseña = self.entry_contraseña.get()
 
-        medico = Medico("12", "12", "12", "12", "1234", "usuario", "12", "12", "mk")
+        medico = Medico("12", "12", "12", "12", "1", "u", "12", "12", "mk")
         agregar_medico(medico)
 
         paciente = Paciente(identificacion="1", nombre="John Doe", genero="Hombre",

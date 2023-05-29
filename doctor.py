@@ -3,7 +3,7 @@ from tkinter import ttk
 import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registroMedicos import agregar_medico
-from registros.registros import obtener_registros_pacientes
+from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id
 from usuario import Usuario
 import util.generic as utl
 
@@ -26,7 +26,6 @@ class Medico(Usuario):
         for paciente in lista_pacientes:
             print(paciente.nombre)
             print(paciente.identificacion)
-        
 
         btn_agregar_historial = ttk.Button(ventana_doctor, text="Agregar Historial Clínico", command=self.agregar_historial)
         btn_agregar_historial.pack(pady=10, padx=20, fill=tk.X)
@@ -34,9 +33,8 @@ class Medico(Usuario):
         btn_mostrar_historial = ttk.Button(ventana_doctor, text="Mostrar Historial Clínico", command=self.mostrar_historial)
         btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
 
-        btn_ver_horario = ttk.Button(ventana_doctor, text="Ver Horario", command=self.ver_horario)
-        btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
-
+    # btn_ver_horario = ttk.Button(ventana_doctor, text="Ver Horario", command=self.ver_horario)
+     #   btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
         btn_buscar_paciente = ttk.Button(ventana_doctor, text="Buscar Paciente", command=self.buscar_paciente)
         btn_buscar_paciente.pack(pady=10, padx=20, fill=tk.X)
 
@@ -65,13 +63,16 @@ class Medico(Usuario):
         # Lógica para la acción de mostrar historial clínico
         pass
 
-    def ver_horario(self):
-        # Lógica para la acción de ver horario
-        pass
 
-    def buscar_paciente(self):
-        # Lógica para la acción de buscar paciente
-        pass
+    def buscar_paciente(self, event=None):
+        id_paciente = input("Ingrese el ID del paciente: ")
+        paciente_encontrado = obtener_paciente_por_id(id_paciente)
+        if paciente_encontrado is not None:
+            # Realiza las operaciones que desees con el objeto paciente_encontrado  
+           print("Paciente encontrado:", paciente_encontrado.nombre)
+        else:
+         print("No se encontró ningún paciente con el ID proporcionado.")
+
 
         
     def registro_medico():

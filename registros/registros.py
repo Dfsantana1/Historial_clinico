@@ -62,3 +62,10 @@ def mostrar_paciente_historial(id):
 
 def obtener_registros_pacientes():
     return registros_pacientes
+
+def obtener_paciente_por_id(id_paciente):
+    for paciente in registros_pacientes:
+        if paciente.identificacion == id_paciente:
+            return paciente
+    return None
+
