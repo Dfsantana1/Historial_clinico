@@ -3,7 +3,8 @@ from tkinter import ttk
 import tkcalendar as tkcal 
 import re
 from ventanas.mostrar import mostrar_mensaje
-from registros.registros import agregar_paciente
+from registros.registros import agregar_paciente,mostrar_paciente_historial
+from historial import HistorialClinico
 from usuario import Usuario
 import util.generic as utl
 
@@ -11,11 +12,16 @@ import util.generic as utl
 class Paciente(Usuario):
     def __init__(self, identificacion, nombre, genero, direccion, contraseña, usuario, telefono, correo, fecha_nacimiento):
         super().__init__(identificacion, nombre, genero, direccion, contraseña, usuario, "Paciente", telefono, correo)
-        self.fecha_nacimiento = fecha_nacimiento
+        self.fecha_nacimiento = fecha_nacimiento 
+        self.historial_clinico =[]
 
-    @staticmethod
 
-    def iniciar_ventana():
+
+
+    def agregar_registro_historial(self, registro):
+        self.historial_clinico.agregar_registro(registro)
+
+    def iniciar_ventana(self):
         ventana_paciente = tk.Tk()
         ventana_paciente.title("Ventana del Paciente")
         ventana_paciente.geometry("1600x900")
@@ -25,7 +31,7 @@ class Paciente(Usuario):
         mensaje_bienvenida.pack(pady=10)
 
         # Botones
-        btn_mostrar_historial = ttk.Button(ventana_paciente, text="Mostrar Historial Clínico", command=Paciente.mostrar_historial)
+        btn_mostrar_historial = ttk.Button(ventana_paciente, text="Mostrar Historial Clínico", command=mostrar_paciente_historial(self.identificacion))
         btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
 
         btn_ver_horario = ttk.Button(ventana_paciente, text="Ver Horario", command=Paciente.ver_horario)
@@ -36,6 +42,10 @@ class Paciente(Usuario):
         # Agrega aquí los elementos y la lógica para la ventana del médico
 
         ventana_paciente.mainloop()
+
+        
+    @staticmethod
+
 
     def mostrar_historial(self):
         # Lógica para la acción de mostrar historial clínico
@@ -140,3 +150,4 @@ class Paciente(Usuario):
 
 
         ventana_registro_paciente.mainloop()
+

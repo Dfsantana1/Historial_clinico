@@ -3,7 +3,8 @@ from ventanas.mostrar import mostrar_mensaje
 from usuario import Usuario
 from doctor import Medico
 from paciente import Paciente
-from registros.registros import validar_credenciales
+from registros.registros import validar_credenciales,agregar_paciente,agregar_historial,mostrar_paciente_historial
+from historial import HistorialClinico
 from registros.registroMedicos import validar_credencialesM, agregar_medico
 import util.generic as utl
 
@@ -59,8 +60,43 @@ class Login:
         usuario = self.entry_usuario.get()
         contraseña = self.entry_contraseña.get()
 
-        medico = Medico("12", "12", "12", "12", "1234", "usuario", "12", "12", "mk")
+        medico = Medico("12", "12", "12", "12", "1", "u", "12", "12", "mk")
         agregar_medico(medico)
+
+        paciente = Paciente(identificacion="1", nombre="John Doe", genero="Hombre",
+                    direccion="Dirección de Ejemplo", contraseña="1",
+                    usuario="j", telefono="9876543210", correo="john.doe@example.com",
+                    fecha_nacimiento="2000-01-01")
+
+# Llamar a la función agregar_paciente
+        agregar_paciente(paciente)
+
+        historial = HistorialClinico(
+    numero_documento="1",
+    nombre="Juan Pérez",
+    edad=35,
+    sexo="Hombre",
+    altura=175,
+    peso=70,
+    telefono="1234567890",
+    email="juan@example.com",
+    direccion="Calle Principal 123",
+    sintomas="Dolor de cabeza, fiebre",
+    fecha_inicio_sintomas="2023-05-15",
+    quejas="Malestar general",
+    alergias="Ninguna",
+    medicamentos="Paracetamol",
+    enfermedades_hereditarias="Diabetes",
+    enfermedades_actuales="Hipertensión",
+    fecha_consulta="2023-05-20"
+)
+
+
+        agregar_historial(paciente.identificacion,historial)
+      
+
+
+        mostrar_paciente_historial(paciente.identificacion)    
 
         medico_valido = validar_credencialesM(usuario, contraseña)
         if isinstance(medico_valido, Medico):
