@@ -4,6 +4,7 @@ import tkcalendar as tkcal
 import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registros import agregar_paciente
+from historial import HistorialClinico
 from usuario import Usuario
 import util.generic as utl
 
@@ -11,8 +12,15 @@ import util.generic as utl
 class Paciente(Usuario):
     def __init__(self, identificacion, nombre, genero, direccion, contraseña, usuario, telefono, correo, fecha_nacimiento):
         super().__init__(identificacion, nombre, genero, direccion, contraseña, usuario, "Paciente", telefono, correo)
-        self.fecha_nacimiento = fecha_nacimiento
+        self.fecha_nacimiento = fecha_nacimiento 
+        self.historial_clinico =[]
 
+
+
+
+    def agregar_registro_historial(self, registro):
+        self.historial_clinico.agregar_registro(registro)
+        
     @staticmethod
 
     def iniciar_ventana():
@@ -140,3 +148,4 @@ class Paciente(Usuario):
 
 
         ventana_registro_paciente.mainloop()
+
