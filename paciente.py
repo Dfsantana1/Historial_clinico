@@ -1,5 +1,6 @@
 import tkinter as tk
 from tkinter import ttk
+import tkcalendar as tkcal 
 import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registros import agregar_paciente
@@ -18,7 +19,7 @@ class Paciente(Usuario):
         ventana_paciente = tk.Tk()
         ventana_paciente.title("Ventana del Paciente")
         ventana_paciente.geometry("1600x900")
-        ventana_paciente.configure(bg="#F0F8FF")
+        ventana_paciente.configure(bg="#CBDEF6")
 
         mensaje_bienvenida = tk.Label(ventana_paciente, text=f"Bienvenido Paciente", font=("Arial", 16), bg="#F0F8FF", fg="#000000")
         mensaje_bienvenida.pack(pady=10)
@@ -48,27 +49,27 @@ class Paciente(Usuario):
     def registro_paciente():
         ventana_registro_paciente = tk.Toplevel()
         ventana_registro_paciente.title("Registro de Paciente")
-        ventana_registro_paciente.config(bg='#000000')
+        ventana_registro_paciente.config(bg='#CBDEF6')
         ventana_registro_paciente.resizable(width=0, height=0)
         utl.centrar_ventana(ventana_registro_paciente, 600, 700)
 
         logo = utl.leer_imagen("./imagenes/logo.png", (200, 400))
-        frame_principal = tk.Frame(ventana_registro_paciente, bg='#000000')
+        frame_principal = tk.Frame(ventana_registro_paciente, bg='#CBDEF6')
         frame_principal.pack(fill=tk.BOTH, expand=False)
 
-        frame_logo = tk.Frame(frame_principal, bg='#F87474')
+        frame_logo = tk.Frame(frame_principal, bg='#CBDEF6')
         frame_logo.pack(side="left", padx=10, pady=10)
 
-        label = tk.Label(frame_logo, image=logo, bg='#F87474')
+        label = tk.Label(frame_logo, image=logo, bg='#CBDEF6')
         label.pack(fill=tk.BOTH, expand=True)
 
-        frame_form = tk.Frame(frame_principal, bg='#000000')
+        frame_form = tk.Frame(frame_principal, bg='#CBDEF6')
         frame_form.pack(side="right", padx=5, pady=5, fill=tk.BOTH, expand=True)
 
-        title = tk.Label(frame_form, text="Registro de Paciente", font=('Times', 20), fg="#ffffff", bg='#000000', pady=10)
+        title = tk.Label(frame_form, text="Registro de Paciente", font=('Times', 20), fg="#3176EB", bg='#CBDEF6', pady=10)
         title.pack(fill=tk.X)
 
-        form = tk.Frame(frame_form, bg='#000000')
+        form = tk.Frame(frame_form, bg='#CBDEF6')
         form.pack(fill=tk.BOTH, expand=True)
 
         etiquetas = ["Identificación", "Nombre", "Género", "Dirección", "Contraseña","Confirmar Contraseña", "Usuario",
@@ -76,16 +77,25 @@ class Paciente(Usuario):
         campos = []
 
         for i, etiqueta in enumerate(etiquetas):
-            lbl = tk.Label(form, text=etiqueta, font=('Times', 8), fg="#ffffff", bg='#000000', anchor="w")
-            lbl.pack(side="top", padx=5, pady=5, fill=tk.X)
+            lbl = tk.Label(form, text=etiqueta, font=('Times', 10), fg="#0B4EC0", bg='#CBDEF6', anchor="w")
+            lbl.pack(side="top", padx=5, pady=2, fill=tk.X)
 
-            if etiqueta == "Contraseña" or etiqueta == "Confirmar Contraseña":
-                entry = ttk.Entry(form, show='*', width=2)  # Ajustar el ancho del campo de entrada
+            if etiqueta == "Género":
+                combo_genero = ttk.Combobox(form, values=["Masculino", "Femenino"])
+                combo_genero.pack(side="top", padx=5, pady=2, anchor="w")
+                campos.append(combo_genero)
+            elif etiqueta == "Fecha de Nacimiento":
+                fecha_entry = tkcal.DateEntry(form, date_pattern="dd/mm/yyyy")
+                fecha_entry.pack(side="top", padx=2, pady=2, fill=tk.X)
+                campos.append(fecha_entry)
+            elif etiqueta == "Contraseña" or etiqueta == "Confirmar Contraseña":
+                entry = ttk.Entry(form, show='*', width=1)  # Ajustar el ancho del campo de entrada
+                entry.pack(side="top", padx=2, pady=2, fill=tk.X)
+                campos.append(entry)
             else:
                 entry = ttk.Entry(form, width=2)  # Ajustar el ancho del campo de entrada
-
-            entry.pack(side="top", padx=2, pady=2, fill=tk.X)
-            campos.append(entry)
+                entry.pack(side="top", padx=2, pady=2, fill=tk.X)
+                campos.append(entry)
 
         def regresar():
             ventana_registro_paciente.destroy()
@@ -122,10 +132,10 @@ class Paciente(Usuario):
             paciente.contraseña
             ventana_registro_paciente.destroy()
                 
-        btn_guardar = tk.Button(ventana_registro_paciente, text="Guardar", command=guardar_registro, bg='#FF0000', fg='#FFFFFF')
+        btn_guardar = tk.Button(ventana_registro_paciente, text="Guardar", command=guardar_registro, bg='#9E9CA1', fg='#2B282E')
         btn_guardar.pack(side="top", padx=20, pady=10, fill=tk.X)
 
-        btn_regresar = tk.Button(ventana_registro_paciente, text="Regresar", command=regresar, bg='#0000FF', fg='#FFFFFF')
+        btn_regresar = tk.Button(ventana_registro_paciente, text="Regresar", command=regresar, bg='#9E9CA1', fg='#2B282E')
         btn_regresar.pack(side="top", padx=20, pady=10, fill=tk.X)
 
 
