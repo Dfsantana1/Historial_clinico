@@ -31,22 +31,33 @@ def validar_credenciales(usuario, contraseña):
     return None
 
 
-def agregar_historial(registro):
-            registros_pacientes[0].historial_clinico.append(registro)
-            return True  # Indicar que se agregó el historial clínico correctamente
-
-def mostrar_pacientes_historial():
+def agregar_historial(id, registro):
     for paciente in registros_pacientes:
-        print("Paciente:", paciente.nombre)
-        print("Historial clínico:")
-        for registro in paciente.historial_clinico:
-            print("Fecha de Consulta:", registro.fecha_consulta)
-            print("Síntomas:", registro.sintomas)
-            print("Quejas:", registro.quejas)
-            print("Enfermedades Actuales:", registro.enfermedades_actuales)
-            print("---------------")
-        print("---------------")
+        if paciente.identificacion == id:
+            paciente.historial_clinico.append(registro)
+            print("registro exitoso")
+            return   # Indicar que se agregó el historial clínico correctamente
+    
+    print("registro fallido") # Si no se encontró ningún paciente con el ID indicado
 
+
+def mostrar_paciente_historial(id):
+    for paciente in registros_pacientes:
+        if paciente.identificacion == id:
+            print("Paciente:", paciente.nombre)
+            print(paciente.identificacion)
+            print("Historial clínico:")
+            for registro in paciente.historial_clinico:
+                print("Fecha de Consulta:", registro.fecha_consulta)
+                print("Síntomas:", registro.sintomas)
+                print("Quejas:", registro.quejas)
+                print("Enfermedades Actuales:", registro.enfermedades_actuales)
+                print("---------------")
+            print("---------------")
+            return  # Salir de la función después de encontrar el paciente con el ID deseado
+    
+    # Si no se encuentra ningún paciente con el ID indicado
+    print("No se encontró ningún paciente con el ID indicado:", id)
 
 
 def obtener_registros_pacientes():
