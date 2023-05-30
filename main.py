@@ -1,7 +1,7 @@
 import tkinter as tk
 from ventanas.mostrar import mostrar_mensaje
 from usuario.usuario import Usuario
-from usuario.doctor import Medico
+from usuario.madico import Medico
 from usuario.paciente import Paciente
 from registros.registros import validar_credenciales,agregar_paciente,agregar_historial,mostrar_paciente_historial
 from historial import HistorialClinico
@@ -60,12 +60,12 @@ class Login:
         usuario = self.entry_usuario.get()
         contraseña = self.entry_contraseña.get()
 
-        medico = Medico("12", "12", "12", "12", "1", "u", "12", "12", "mk")
+        medico = Medico("12", "12", "12", "12", "1", "m", "12", "12", "mk")
         agregar_medico(medico)
 
         paciente = Paciente(identificacion="1", nombre="John Doe", genero="Hombre",
                     direccion="Dirección de Ejemplo", contraseña="1",
-                    usuario="j", telefono="9876543210", correo="john.doe@example.com",
+                    usuario="p", telefono="9876543210", correo="john.doe@example.com",
                     fecha_nacimiento="2000-01-01")
 
 # Llamar a la función agregar_paciente
