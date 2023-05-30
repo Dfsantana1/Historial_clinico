@@ -6,12 +6,22 @@ from registros.registroMedicos import agregar_medico
 from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id
 from usuario import Usuario
 import util.generic as utl
-
+from horario import Horario
 
 class Medico(Usuario):
     def __init__(self, identificacion, nombre, genero, direccion, contraseña, usuario, telefono, correo, especialidad):
         super().__init__(identificacion, nombre, genero, direccion, contraseña, usuario, "Medico", telefono, correo)
         self.especialidad = especialidad
+        self.horario = []
+
+        dias_semana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+        horas_disponibles = list(range(7, 13)) + list(range(14, 18))
+# Rango de horas de 7 a 12 y de 14 a 17
+        for dia in dias_semana:
+            for hora in horas_disponibles:
+                hora_inicio = f"{hora:02d}:00"  # Formato HH:MM
+                hora_fin = f"{hora + 1:02d}:00"
+                self.horario.append(Horario(dia, hora_inicio, hora_fin))
 
     def iniciar_ventana(self):
         ventana_doctor = tk.Tk()
@@ -33,12 +43,28 @@ class Medico(Usuario):
         btn_mostrar_historial = ttk.Button(ventana_doctor, text="Mostrar Historial Clínico", command=self.mostrar_historial)
         btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
 
-    # btn_ver_horario = ttk.Button(ventana_doctor, text="Ver Horario", command=self.ver_horario)
-     #   btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
+
         btn_buscar_paciente = ttk.Button(ventana_doctor, text="Buscar Paciente", command=self.buscar_paciente)
         btn_buscar_paciente.pack(pady=10, padx=20, fill=tk.X)
 
+        btn_ver_horario = ttk.Button(ventana_doctor, text="Ver Horario", command=self.ver_horario)
+        btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
+
         ventana_doctor.mainloop()
+        
+    def ver_horario(self):
+        horario_medico = self.horario
+        if horario_medico is not None:
+            print("Horario del médico:")
+            for horario in horario_medico:
+                print("Día:", horario.dia)
+                print("Hora de inicio:", horario.hora_inicio)
+                print("Hora de fin:", horario.hora_fin)
+                print("Disponibilidad:", horario.disponible)
+                print("-------------------")
+        else:
+            print("No se encontró un médico con la identificación especificada.")
+            
 
     def agregar_historial(self):
         ventana_agregar_historial = tk.Toplevel()
@@ -124,6 +150,7 @@ class Medico(Usuario):
 
         def regresar():
             ventana_registro_medico.destroy()
+
 
         def guardar_registro():
             datos = [campo.get() for campo in campos]
