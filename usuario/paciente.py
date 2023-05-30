@@ -4,6 +4,7 @@ import tkcalendar as tkcal
 import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registros import agregar_paciente,mostrar_paciente_historial
+from registros.registroMedicos import obtener_medicos
 from historial import HistorialClinico
 from usuario.usuario import Usuario
 import util.generic as utl
@@ -31,10 +32,10 @@ class Paciente(Usuario):
         mensaje_bienvenida.pack(pady=10)
 
         # Botones
-        btn_mostrar_historial = ttk.Button(ventana_paciente, text="Mostrar Historial Clínico", command=mostrar_paciente_historial(self.identificacion))
+        btn_mostrar_historial = ttk.Button(ventana_paciente, text="Ver Mi Historial", command=mostrar_paciente_historial(self.identificacion))
         btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
 
-        btn_ver_horario = ttk.Button(ventana_paciente, text="Ver Horario", command=Paciente.ver_horario)
+        btn_ver_horario = ttk.Button(ventana_paciente, text="Ver Medicos ", command=self.ver_medicos)
         btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
 
 
@@ -43,14 +44,36 @@ class Paciente(Usuario):
 
         ventana_paciente.mainloop()
 
-        
+
+    def ver_medicos(self):
+        ventana = tk.Toplevel()  # Crear una nueva ventana (pestaña)
+
+        medicos = obtener_medicos()
+
+        for medico in medicos:
+            nombre = medico.nombre
+            especialidad = medico.especialidad
+
+            # Crear un frame para agrupar el nombre, la especialidad y el botón
+            frame_medico = ttk.Frame(ventana)
+            frame_medico.pack(pady=10)
+
+            # Etiqueta para mostrar el nombre y la especialidad en la misma línea
+            label_nombre_especialidad = ttk.Label(frame_medico, text=f"{nombre} - {especialidad}")
+            label_nombre_especialidad.pack(side=tk.LEFT, padx=5)
+
+            # Botón "Ver Horario"
+            btn_ver_horario = ttk.Button(frame_medico, text="Ver Horario",command=medico.ver_horario)
+            btn_ver_horario.pack(side=tk.LEFT, padx=5)
+
+            # Lógica para vincular el botón con la función para ver el horario del médico
+
+            ventana.mainloop()
+
     @staticmethod
 
 
 
-    def ver_horario(self):
-        # Lógica para la acción de ver horario
-        pass
 
 
     def registro_paciente():

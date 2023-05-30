@@ -34,5 +34,4 @@ def consultar_horario_medico(identificacion):
             return medico.horario
     return None
 
-def obtener_registros_medicos():
-    return registros_medicos
+
