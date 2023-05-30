@@ -4,7 +4,7 @@ import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registroMedicos import agregar_medico
 from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id
-from usuario import Usuario
+from usuario.usuario import Usuario
 import util.generic as utl
 from horario import Horario
 

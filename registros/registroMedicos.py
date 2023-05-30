@@ -1,5 +1,5 @@
 from ventanas.mostrar import mostrar_mensaje
-from usuario import Usuario
+from usuario.usuario import Usuario
 
 registros_medicos = []
 
@@ -33,3 +33,6 @@ def consultar_horario_medico(identificacion):
         if medico.identificacion == identificacion:
             return medico.horario
     return None
+
+def obtener_registros_medicos():
+    return registros_medicos
