@@ -3,7 +3,7 @@ from tkinter import ttk
 import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registroMedicos import agregar_medico
-from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id
+from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id,mostrar_paciente_historial
 from usuario.usuario import Usuario
 import util.generic as utl
 from horario import Horario
@@ -37,12 +37,6 @@ class Medico(Usuario):
             print(paciente.nombre)
             print(paciente.identificacion)
 
-        btn_agregar_historial = ttk.Button(ventana_doctor, text="Agregar Historial Clínico", command=self.agregar_historial)
-        btn_agregar_historial.pack(pady=10, padx=20, fill=tk.X)
-
-        btn_mostrar_historial = ttk.Button(ventana_doctor, text="Mostrar Historial Clínico", command=self.mostrar_historial)
-        btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
-
 
         btn_buscar_paciente = ttk.Button(ventana_doctor, text="Buscar Paciente", command=self.buscar_paciente)
         btn_buscar_paciente.pack(pady=10, padx=20, fill=tk.X)
@@ -52,20 +46,54 @@ class Medico(Usuario):
 
         ventana_doctor.mainloop()
         
+   
     def ver_horario(self):
-        horario_medico = self.horario
-        if horario_medico is not None:
-            print("Horario del médico:")
-            for horario in horario_medico:
-                print("Día:", horario.dia)
-                print("Hora de inicio:", horario.hora_inicio)
-                print("Hora de fin:", horario.hora_fin)
-                print("Disponibilidad:", horario.disponible)
-                print("-------------------")
-        else:
-            print("No se encontró un médico con la identificación especificada.")
-            
+        
+        ventana = tk.Toplevel()
+        ventana.title("Horario del Médico")
 
+        horario_medico = self.horario
+
+        if horario_medico is not None:
+            frame_horario = ttk.Frame(ventana)
+            frame_horario.pack(padx=10, pady=10)
+
+            canvas = tk.Canvas(frame_horario)
+            canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+            scrollbar = ttk.Scrollbar(frame_horario, orient=tk.VERTICAL, command=canvas.yview)
+            scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+            canvas.configure(yscrollcommand=scrollbar.set)
+            canvas.bind("<Configure>", lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+            frame_horario_interior = ttk.Frame(canvas)
+            canvas.create_window((0, 0), window=frame_horario_interior, anchor="nw")
+
+            for horario in horario_medico:
+                frame_dia = ttk.Frame(frame_horario_interior)
+                frame_dia.pack(pady=5)
+
+                label_dia = ttk.Label(frame_dia, text=f"Día: {horario.dia}")
+                label_dia.pack(side=tk.LEFT)
+
+                label_inicio = ttk.Label(frame_dia, text=f"Hora de inicio: {horario.hora_inicio}")
+                label_inicio.pack(side=tk.LEFT, padx=10)
+
+                label_fin = ttk.Label(frame_dia, text=f"Hora de fin: {horario.hora_fin}")
+                label_fin.pack(side=tk.LEFT, padx=10)
+
+                label_disponibilidad = ttk.Label(frame_dia, text=f"Disponibilidad: {'Disponible' if horario.disponible else 'No disponible'}")
+                label_disponibilidad.pack(side=tk.LEFT, padx=10)
+
+            canvas.update_idletasks()
+            canvas.configure(scrollregion=canvas.bbox("all"))
+
+        else:
+            mensaje_no_encontrado = ttk.Label(ventana, text="No se encontró un médico con la identificación especificada.")
+            mensaje_no_encontrado.pack(pady=10)
+
+        ventana.mainloop()
     def agregar_historial(self):
         ventana_agregar_historial = tk.Toplevel()
         ventana_agregar_historial.geometry("400x500")
@@ -85,10 +113,6 @@ class Medico(Usuario):
         btn_agregar.pack(pady=10)
 
         ventana_agregar_historial.mainloop()
-    def mostrar_historial(self):
-        # Lógica para la acción de mostrar historial clínico
-        pass
-
 
     def buscar_paciente(self):
         def buscar():
@@ -105,13 +129,13 @@ class Medico(Usuario):
                 lbl_resultado.config(text=resultado)
 
                 # Agregar botones
-                btn_ver_historial = ttk.Button(frame, text="Ver Historial", command=lambda: self.ver_historial_paciente(paciente_encontrado))
+                btn_ver_historial = ttk.Button(frame, text="Ver Historial", command=lambda :mostrar_paciente_historial(paciente_encontrado.identificacion))
                 btn_ver_historial.grid(row=3, column=0, pady=10)
 
-                btn_editar_historial = ttk.Button(frame, text="Editar Historial", command=lambda: self.editar_historial_paciente(paciente_encontrado))
+                btn_editar_historial = ttk.Button(frame, text="Editar Historial")
                 btn_editar_historial.grid(row=3, column=1, pady=10)
 
-                btn_agregar_historial = ttk.Button(frame, text="Agregar Historial", command=lambda: self.agregar_historial_paciente(paciente_encontrado))
+                btn_agregar_historial = ttk.Button(frame, text="Agregar Historial")
                 btn_agregar_historial.grid(row=3, column=2, pady=10)
 
             else:

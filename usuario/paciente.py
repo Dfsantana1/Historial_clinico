@@ -32,11 +32,11 @@ class Paciente(Usuario):
         mensaje_bienvenida.pack(pady=10)
 
         # Botones
-        btn_mostrar_historial = ttk.Button(ventana_paciente, text="Ver Mi Historial", command=mostrar_paciente_historial(self.identificacion))
-        btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
-
         btn_ver_horario = ttk.Button(ventana_paciente, text="Ver Medicos ", command=self.ver_medicos)
         btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
+        btn_mostrar_historial = ttk.Button(ventana_paciente, text="Ver Mi Historial", command=lambda: mostrar_paciente_historial(self.identificacion))
+        btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
+
 
 
 
@@ -69,6 +69,8 @@ class Paciente(Usuario):
             # Lógica para vincular el botón con la función para ver el horario del médico
 
             ventana.mainloop()
+
+    
 
     @staticmethod
 

@@ -1,5 +1,7 @@
 from usuario.usuario import Usuario
 from ventanas.mostrar import mostrar_mensaje
+import tkinter as tk
+from tkinter import ttk
 registros_pacientes = []
 
 
@@ -42,23 +44,45 @@ def agregar_historial(id, registro):
 
 
 def mostrar_paciente_historial(id):
+    ventana = tk.Toplevel()
+    ventana.title("Historial del Paciente")
+
+    frame_historial = ttk.Frame(ventana)
+    frame_historial.pack(padx=10, pady=10)
+
     for paciente in registros_pacientes:
         if paciente.identificacion == id:
-            print("Paciente:", paciente.nombre)
-            print(paciente.identificacion)
-            print("Historial clínico:")
-            for registro in paciente.historial_clinico:
-                print("Fecha de Consulta:", registro.fecha_consulta)
-                print("Síntomas:", registro.sintomas)
-                print("Quejas:", registro.quejas)
-                print("Enfermedades Actuales:", registro.enfermedades_actuales)
-                print("---------------")
-            print("---------------")
-            return  # Salir de la función después de encontrar el paciente con el ID deseado
-    
-    # Si no se encuentra ningún paciente con el ID indicado
-    print("No se encontró ningún paciente con el ID indicado:", id)
+            label_paciente = ttk.Label(frame_historial, text="Paciente: " + paciente.nombre)
+            label_paciente.pack()
 
+            label_identificacion = ttk.Label(frame_historial, text="Identificación: " + paciente.identificacion)
+            label_identificacion.pack()
+
+            label_historial = ttk.Label(frame_historial, text="Historial clínico:")
+            label_historial.pack(pady=5)
+
+            for registro in paciente.historial_clinico:
+                label_fecha_consulta = ttk.Label(frame_historial, text="Fecha de Consulta: " + registro.fecha_consulta)
+                label_fecha_consulta.pack()
+
+                label_sintomas = ttk.Label(frame_historial, text="Síntomas: " + registro.sintomas)
+                label_sintomas.pack()
+
+                label_quejas = ttk.Label(frame_historial, text="Quejas: " + registro.quejas)
+                label_quejas.pack()
+
+                label_enfermedades = ttk.Label(frame_historial, text="Enfermedades Actuales: " + registro.enfermedades_actuales)
+                label_enfermedades.pack()
+
+                ttk.Separator(frame_historial, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=5)
+
+            break
+    
+    else:
+        label_no_encontrado = ttk.Label(frame_historial, text="No se encontró ningún paciente con el ID indicado: " + id)
+        label_no_encontrado.pack()
+
+    ventana.mainloop()
 
 def obtener_registros_pacientes():
     return registros_pacientes

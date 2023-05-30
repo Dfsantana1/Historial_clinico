@@ -95,9 +95,7 @@ class Login:
 
         agregar_historial(paciente.identificacion,historial)
       
-
-
-        mostrar_paciente_historial(paciente.identificacion)    
+   
 
         medico_valido = validar_credencialesM(usuario, contraseña)
         if isinstance(medico_valido, Medico):
