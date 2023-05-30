@@ -1,8 +1,8 @@
 import tkinter as tk
 from ventanas.mostrar import mostrar_mensaje
-from usuario import Usuario
-from doctor import Medico
-from paciente import Paciente
+from usuario.usuario import Usuario
+from usuario.doctor import Medico
+from usuario.paciente import Paciente
 from registros.registros import validar_credenciales,agregar_paciente,agregar_historial,mostrar_paciente_historial
 from historial import HistorialClinico
 from registros.registroMedicos import validar_credencialesM, agregar_medico,consultar_horario_medico

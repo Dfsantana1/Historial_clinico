@@ -1,4 +1,4 @@
-from usuario import Usuario
+from usuario.usuario import Usuario
 from ventanas.mostrar import mostrar_mensaje
 registros_pacientes = []
 

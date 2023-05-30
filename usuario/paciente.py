@@ -5,7 +5,7 @@ import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registros import agregar_paciente,mostrar_paciente_historial
 from historial import HistorialClinico
-from usuario import Usuario
+from usuario.usuario import Usuario
 import util.generic as utl
 
 
