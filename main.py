@@ -5,7 +5,7 @@ from doctor import Medico
 from paciente import Paciente
 from registros.registros import validar_credenciales,agregar_paciente,agregar_historial,mostrar_paciente_historial
 from historial import HistorialClinico
-from registros.registroMedicos import validar_credencialesM, agregar_medico
+from registros.registroMedicos import validar_credencialesM, agregar_medico,consultar_horario_medico
 import util.generic as utl
 
 class Login:
@@ -92,6 +92,7 @@ class Login:
 )
 
 
+
         agregar_historial(paciente.identificacion,historial)
       
 
@@ -115,4 +116,6 @@ class Login:
 # Código de ejecución principal
 if __name__ == "__main__":
     login = Login()
+
+
 

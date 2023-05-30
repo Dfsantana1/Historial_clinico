@@ -47,9 +47,6 @@ class Paciente(Usuario):
     @staticmethod
 
 
-    def mostrar_historial(self):
-        # Lógica para la acción de mostrar historial clínico
-        pass
 
     def ver_horario(self):
         # Lógica para la acción de ver horario

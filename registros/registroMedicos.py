@@ -27,3 +27,9 @@ def validar_credencialesM(usuario, contraseña):
         if isinstance(medico, Usuario) and medico.usuario == usuario and medico.contraseña == contraseña:
             return medico
     return None
+
+def consultar_horario_medico(identificacion):
+    for medico in registros_medicos:
+        if medico.identificacion == identificacion:
+            return medico.horario
+    return None
