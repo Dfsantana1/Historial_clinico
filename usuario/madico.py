@@ -1,9 +1,10 @@
 import tkinter as tk
 from tkinter import ttk
 import re
+from historial import HistorialClinico
 from ventanas.mostrar import mostrar_mensaje
 from registros.registroMedicos import agregar_medico
-from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id,mostrar_paciente_historial
+from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id,mostrar_paciente_historial,agregar_historial
 from usuario.usuario import Usuario
 import util.generic as utl
 from horario import Horario
@@ -48,9 +49,9 @@ class Medico(Usuario):
         
    
     def ver_horario(self):
-        
         ventana = tk.Toplevel()
         ventana.title("Horario del Médico")
+        ventana.geometry("600x300")  # Ajusta el tamaño de la ventana según tus necesidades
 
         horario_medico = self.horario
 
@@ -58,7 +59,7 @@ class Medico(Usuario):
             frame_horario = ttk.Frame(ventana)
             frame_horario.pack(padx=10, pady=10)
 
-            canvas = tk.Canvas(frame_horario)
+            canvas = tk.Canvas(frame_horario, width=550)  # Ajusta el valor de width según tus necesidades
             canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
 
             scrollbar = ttk.Scrollbar(frame_horario, orient=tk.VERTICAL, command=canvas.yview)
@@ -94,26 +95,9 @@ class Medico(Usuario):
             mensaje_no_encontrado.pack(pady=10)
 
         ventana.mainloop()
-    def agregar_historial(self):
-        ventana_agregar_historial = tk.Toplevel()
-        ventana_agregar_historial.geometry("400x500")
-        ventana_agregar_historial.configure(bg="#FFFFFF")
 
-        label_id = tk.Label(ventana_agregar_historial, text="ID:")
-        label_id.pack(pady=10)
-        label_nombre = tk.Label(ventana_agregar_historial, text="Nombre:")
-        label_nombre.pack(pady=10)
 
-        entry_id = ttk.Entry(ventana_agregar_historial)
-        entry_id.pack(pady=10)
-        entry_nombre = ttk.Entry(ventana_agregar_historial)
-        entry_nombre.pack(pady=10)
-
-        btn_agregar = ttk.Button(ventana_agregar_historial, text="Agregar", command=lambda: self.guardar_historial(entry_id.get(), entry_nombre.get()))
-        btn_agregar.pack(pady=10)
-
-        ventana_agregar_historial.mainloop()
-
+   
     def buscar_paciente(self):
         def buscar():
             id_paciente = entry_id.get()
@@ -135,7 +119,7 @@ class Medico(Usuario):
                 btn_editar_historial = ttk.Button(frame, text="Editar Historial")
                 btn_editar_historial.grid(row=3, column=1, pady=10)
 
-                btn_agregar_historial = ttk.Button(frame, text="Agregar Historial")
+                btn_agregar_historial = ttk.Button(frame, text="Agregar Historial", command=lambda :self.agregar_historial1(paciente_encontrado))
                 btn_agregar_historial.grid(row=3, column=2, pady=10)
 
             else:
@@ -159,6 +143,92 @@ class Medico(Usuario):
         lbl_resultado = ttk.Label(frame, text="")
         lbl_resultado.grid(row=2, column=0, columnspan=2, pady=10)
 
+
+    def agregar_historial1(self, usuario):
+        ventana_registro_historial = tk.Toplevel()
+        ventana_registro_historial.title("Registro de Historial Clínico")
+        ventana_registro_historial.config(bg='#CBDEF6')
+        ventana_registro_historial.resizable(width=0, height=0)
+        utl.centrar_ventana(ventana_registro_historial, 600, 700)
+
+        logo = utl.leer_imagen("./imagenes/logo.png", (200, 400))
+        frame_principal = tk.Frame(ventana_registro_historial, bg='#CBDEF6')
+        frame_principal.pack(fill=tk.BOTH, expand=True)
+
+        frame_logo = tk.Frame(frame_principal, bg='#CBDEF6')
+        frame_logo.pack(side="left", padx=10, pady=10)
+
+        label = tk.Label(frame_logo, image=logo, bg='#CBDEF6')
+        label.pack(fill=tk.BOTH, expand=True)
+
+        frame_form = tk.Frame(frame_principal, bg='#CBDEF6')
+        frame_form.pack(side="right", padx=5, pady=5, fill=tk.BOTH, expand=True)
+
+        title = tk.Label(frame_form, text="Registro de Historial Clínico", font=('Times', 20), fg="#3176EB", bg='#CBDEF6', pady=10)
+        title.pack(fill=tk.X)
+
+        canvas = tk.Canvas(frame_form, bg='#CBDEF6')
+        canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+        scrollbar = tk.Scrollbar(frame_form, orient=tk.VERTICAL, command=canvas.yview)
+        scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+        canvas.configure(yscrollcommand=scrollbar.set)
+        canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+        form_frame = tk.Frame(canvas, bg='#CBDEF6')
+        canvas.create_window((0, 0), window=form_frame, anchor="nw")
+
+        etiquetas = ["Número de Documento", "Nombre", "Edad", "Sexo", "Altura", "Peso", "Teléfono", "Correo Electrónico",
+                    "Dirección", "Síntomas", "Fecha de Inicio de Síntomas", "Quejas", "Alergias", "Medicamentos",
+                    "Enfermedades Hereditarias", "Enfermedades Actuales", "Fecha de Consulta"]
+
+        campos = []
+        for i, etiqueta in enumerate(etiquetas):
+            lbl = tk.Label(form_frame, text=etiqueta, font=('Times', 8), fg="#0B4EC0", bg='#CBDEF6', anchor="w")
+            lbl.grid(row=i, column=0, padx=5, pady=5, sticky="w")
+
+            entry = ttk.Entry(form_frame, width=30)
+            entry.grid(row=i, column=1, padx=5, pady=5, sticky="w")
+            campos.append(entry)
+
+        canvas.update_idletasks()
+        canvas.config(scrollregion=canvas.bbox("all"))
+
+        def regresar():
+            ventana_registro_historial.destroy()
+
+        def guardar_registro():
+            datos = [campo.get() for campo in campos]
+
+            # Realizar validaciones
+            if any(not dato for dato in datos):
+                mostrar_mensaje("Error", "Todos los campos son requeridos.")
+                return
+
+            # Resto de las validaciones...
+
+            # Crear instancia de HistorialClinico
+            H = HistorialClinico(*datos)
+
+            agregar_historial(usuario.identificacion,H)
+
+                        
+            ventana_registro_historial.destroy()
+
+
+            # Resto del código para guardar el registro
+            # ...
+
+
+
+        btn_guardar = tk.Button(ventana_registro_historial, text="Guardar", command=lambda: guardar_registro(), bg='#9E9CA1', fg='#2B282E')
+        btn_guardar.pack(side="top", padx=20, pady=10, fill=tk.X)
+
+        btn_regresar = tk.Button(ventana_registro_historial, text="Regresar", command=regresar, bg='#9E9CA1', fg='#2B282E')
+        btn_regresar.pack(side="top", padx=20, pady=10, fill=tk.X)
+
+        ventana_registro_historial.mainloop()
 
 
         
