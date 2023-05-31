@@ -4,7 +4,7 @@ import re
 from historial import HistorialClinico
 from ventanas.mostrar import mostrar_mensaje
 from registros.registroMedicos import agregar_medico
-from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id,mostrar_paciente_historial
+from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id,mostrar_paciente_historial,agregar_historial
 from usuario.usuario import Usuario
 import util.generic as utl
 from horario import Horario
@@ -119,7 +119,7 @@ class Medico(Usuario):
                 btn_editar_historial = ttk.Button(frame, text="Editar Historial")
                 btn_editar_historial.grid(row=3, column=1, pady=10)
 
-                btn_agregar_historial = ttk.Button(frame, text="Agregar Historial", command=lambda :self.agregar_historial(paciente_encontrado))
+                btn_agregar_historial = ttk.Button(frame, text="Agregar Historial", command=lambda :self.agregar_historial1(paciente_encontrado))
                 btn_agregar_historial.grid(row=3, column=2, pady=10)
 
             else:
@@ -144,7 +144,7 @@ class Medico(Usuario):
         lbl_resultado.grid(row=2, column=0, columnspan=2, pady=10)
 
 
-    def agregar_historial(self, usuario):
+    def agregar_historial1(self, usuario):
         ventana_registro_historial = tk.Toplevel()
         ventana_registro_historial.title("Registro de Historial Clínico")
         ventana_registro_historial.config(bg='#CBDEF6')
@@ -209,20 +209,28 @@ class Medico(Usuario):
             # Resto de las validaciones...
 
             # Crear instancia de HistorialClinico
-            historial = HistorialClinico(*datos)
+            H = HistorialClinico(*datos)
+
+            agregar_historial(usuario.identificacion,H)
+
+                        
+            ventana_registro_historial.destroy()
+
 
             # Resto del código para guardar el registro
             # ...
 
-            ventana_registro_historial.destroy()
 
-        btn_guardar = tk.Button(ventana_registro_historial, text="Guardar", command=guardar_registro(usuario.identificacion, historial), bg='#9E9CA1', fg='#2B282E')
+
+        btn_guardar = tk.Button(ventana_registro_historial, text="Guardar", command=lambda: guardar_registro(), bg='#9E9CA1', fg='#2B282E')
         btn_guardar.pack(side="top", padx=20, pady=10, fill=tk.X)
 
         btn_regresar = tk.Button(ventana_registro_historial, text="Regresar", command=regresar, bg='#9E9CA1', fg='#2B282E')
         btn_regresar.pack(side="top", padx=20, pady=10, fill=tk.X)
 
         ventana_registro_historial.mainloop()
+
+
         
     def registro_medico():
         ventana_registro_medico = tk.Toplevel()
