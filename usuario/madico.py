@@ -3,7 +3,7 @@ from tkinter import ttk
 import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registroMedicos import agregar_medico
-from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id,mostrar_paciente_historial
+from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id,mostrar_paciente_historial, editar_paciente_historial
 from usuario.usuario import Usuario
 import util.generic as utl
 from horario import Horario
@@ -132,7 +132,7 @@ class Medico(Usuario):
                 btn_ver_historial = ttk.Button(frame, text="Ver Historial", command=lambda :mostrar_paciente_historial(paciente_encontrado.identificacion))
                 btn_ver_historial.grid(row=3, column=0, pady=10)
 
-                btn_editar_historial = ttk.Button(frame, text="Editar Historial")
+                btn_editar_historial = ttk.Button(frame, text="Editar Historial", command=lambda :editar_paciente_historial(paciente_encontrado.identificacion,1))
                 btn_editar_historial.grid(row=3, column=1, pady=10)
 
                 btn_agregar_historial = ttk.Button(frame, text="Agregar Historial")

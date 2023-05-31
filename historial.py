@@ -1,8 +1,8 @@
-from registros.registros import agregar_historial
 class HistorialClinico:
-    def __init__(self, numero_documento, nombre, edad, sexo, altura, peso, telefono, email, direccion,
+    def __init__(self , numero_documento, nombre, edad, sexo, altura, peso, telefono, email, direccion,
                  sintomas, fecha_inicio_sintomas, quejas, alergias, medicamentos, enfermedades_hereditarias,
-                 enfermedades_actuales, fecha_consulta):
+                 enfermedades_actuales, fecha_consulta, id_historial=0):
+        self.id_historial = id_historial
         self.numero_documento = numero_documento
         self.nombre = nombre
         self.edad = edad
