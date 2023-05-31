@@ -3,6 +3,7 @@ from ventanas.mostrar import mostrar_mensaje
 import tkinter as tk
 from tkinter import ttk
 from historial import HistorialClinico
+import util.generic as utl
 registros_pacientes = []
 
 
@@ -91,61 +92,119 @@ def mostrar_paciente_historial(id):
 def editar_paciente_historial(paciente1, id_historial):
     ventana = tk.Toplevel()
     ventana.title("Historial del Paciente")
+    ventana.config(bg='#CBDEF6')
+    ventana.resizable(width=0, height=0)
+    utl.centrar_ventana(ventana, 600, 700)
 
-    frame_historial = ttk.Frame(ventana)
-    frame_historial.pack(padx=10, pady=10)
+    logo = utl.leer_imagen("./imagenes/logo.png", (200, 400))
+    frame_principal = tk.Frame(ventana, bg='#CBDEF6')
+    frame_principal.pack(fill=tk.BOTH, expand=True)
 
+    frame_logo = tk.Frame(frame_principal, bg='#CBDEF6')
+    frame_logo.pack(side="left", padx=10, pady=10)
+
+    label = tk.Label(frame_logo, image=logo, bg='#CBDEF6')
+    label.pack(fill=tk.BOTH, expand=True)
+
+    frame_form = tk.Frame(frame_principal, bg='#CBDEF6')
+    frame_form.pack(side="right", padx=5, pady=5, fill=tk.BOTH, expand=True)
+
+    title = tk.Label(frame_form, text="Historial del Paciente", font=('Times', 20), fg="#3176EB", bg='#CBDEF6', pady=10)
+    title.pack(fill=tk.X)
+
+    canvas = tk.Canvas(frame_form, bg='#CBDEF6')
+    canvas.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    scrollbar = tk.Scrollbar(frame_form, orient=tk.VERTICAL, command=canvas.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    canvas.configure(yscrollcommand=scrollbar.set)
+    canvas.bind('<Configure>', lambda e: canvas.configure(scrollregion=canvas.bbox("all")))
+
+    form_frame = tk.Frame(canvas, bg='#CBDEF6')
+    canvas.create_window((0, 0), window=form_frame, anchor="nw")
+
+    etiquetas = ["Número de Documento", "Nombre", "Edad", "Sexo", "Altura", "Peso", "Teléfono", "Correo Electrónico",
+                "Dirección", "Síntomas", "Fecha de Inicio de Síntomas", "Quejas", "Alergias", "Medicamentos",
+                "Enfermedades Hereditarias", "Enfermedades Actuales", "Fecha de Consulta"]
+
+    campos = []
+    for i, etiqueta in enumerate(etiquetas):
+        lbl = tk.Label(form_frame, text=etiqueta, font=('Times', 8), fg="#0B4EC0", bg='#CBDEF6', anchor="w")
+        lbl.grid(row=i, column=0, padx=5, pady=5, sticky="w")
+
+        entry = ttk.Entry(form_frame, width=30)
+        entry.grid(row=i, column=1, padx=5, pady=5, sticky="w")
+        campos.append(entry)
+
+    # Obtener información existente del registro
     for paciente in registros_pacientes:
         if paciente.identificacion == paciente1:
-            for indice, registro in enumerate(paciente.historial_clinico):
+            for registro in paciente.historial_clinico:
                 if id_historial == registro.id_historial:
-                    #numero_documento = input("Ingrese el número de documento: ")
-                    #nombre = input("Ingrese el nombre: ")
-                    #edad = int(input("Ingrese la edad: "))
-                    #sexo = input("Ingrese el sexo: ")
-                    altura = int(input("Ingrese la altura: "))
-                    peso = float(input("Ingrese el peso: "))
-                    telefono = input("Ingrese el número de teléfono: ")
-                    email = input("Ingrese el correo electrónico: ")
-                    direccion = input("Ingrese la dirección: ")
-                    sintomas = input("Ingrese los síntomas: ")
-                    fecha_inicio_sintomas = input("Ingrese la fecha de inicio de los síntomas (YYYY-MM-DD): ")
-                    quejas = input("Ingrese las quejas: ")
-                    alergias = input("Ingrese las alergias: ")
-                    medicamentos = input("Ingrese los medicamentos: ")
-                    enfermedades_hereditarias = input("Ingrese las enfermedades hereditarias: ")
-                    enfermedades_actuales = input("Ingrese las enfermedades actuales: ")
-                    fecha_consulta = input("Ingrese la fecha de consulta (YYYY-MM-DD): ")
-
-                    historial = HistorialClinico(
-                        #numero_documento=numero_documento,
-                        #nombre=nombre,
-                        numero_documento=registro.numero_documento,
-                        nombre=registro.nombre,
-                        edad=registro.edad,
-                        sexo=registro.sexo,
-                        altura=altura,
-                        peso=peso,
-                        telefono=telefono,
-                        email=email,
-                        direccion=direccion,
-                        sintomas=sintomas,
-                        fecha_inicio_sintomas=fecha_inicio_sintomas,
-                        quejas=quejas,
-                        alergias=alergias,
-                        medicamentos=medicamentos,
-                        enfermedades_hereditarias=enfermedades_hereditarias,
-                        enfermedades_actuales=enfermedades_actuales,
-                        fecha_consulta=fecha_consulta
-                    )
-                    paciente.historial_clinico[indice] = historial
-                    print("Registro actualizado")
+                    # Rellenar los campos de entrada con la información existente
+                    campos[0].insert(tk.END, paciente1)
+                    campos[1].insert(tk.END, paciente.nombre)
+                    campos[2].insert(tk.END, registro.edad)
+                    campos[3].insert(tk.END, registro.sexo)
+                    campos[4].insert(tk.END, registro.altura)
+                    campos[5].insert(tk.END, registro.peso)
+                    campos[6].insert(tk.END, registro.telefono)
+                    campos[7].insert(tk.END, registro.email)
+                    campos[8].insert(tk.END, registro.direccion)
+                    campos[9].insert(tk.END, registro.sintomas)
+                    campos[10].insert(tk.END, registro.fecha_inicio_sintomas)
+                    campos[11].insert(tk.END, registro.quejas)
+                    campos[12].insert(tk.END, registro.alergias)
+                    campos[13].insert(tk.END, registro.medicamentos)
+                    campos[14].insert(tk.END, registro.enfermedades_hereditarias)
+                    campos[15].insert(tk.END, registro.enfermedades_actuales)
+                    campos[16].insert(tk.END, registro.fecha_consulta)
                     break
-            else:
-                print("No se encontró el historial con el ID proporcionado")
-            break
-    else:
-        print("No se encontró el paciente con la identificación proporcionada")
+                
+    for campo in campos[:4]:
+        campo.configure(state='readonly')
+
+    canvas.update_idletasks()
+    canvas.config(scrollregion=canvas.bbox("all"))
+
+    def regresar():
+        ventana.destroy()
+
+    def guardar_registro():
+        datos = [campo.get() for campo in campos]
+
+        # Realizar validaciones
+        if any(not dato for dato in datos):
+            mostrar_mensaje("Error", "Todos los campos son requeridos.")
+            return
+
+        # Resto de las validaciones...
+
+        # Crear instancia de HistorialClinico
+        historial = HistorialClinico(*datos)
+
+        for paciente in registros_pacientes:
+            if paciente.identificacion == paciente1:
+                for indice, registro in enumerate(paciente.historial_clinico):
+                    if id_historial == registro.id_historial:
+                        paciente.historial_clinico[indice] = historial
+                        mostrar_mensaje("Registro Actualizado", "El historial ha sido actualizado exitosamente.")
+                        ventana.destroy()
+                        break
+                else:
+                    mostrar_mensaje("Error", "No se encontró el historial con el ID proporcionado.")
+                break
+        else:
+            mostrar_mensaje("Error", "No se encontró el paciente con la identificación proporcionada.")
+
+    btn_guardar = tk.Button(ventana, text="Guardar", command=guardar_registro, bg='#9E9CA1', fg='#2B282E')
+    btn_guardar.pack(side="top", padx=20, pady=10, fill=tk.X)
+
+    btn_regresar = tk.Button(ventana, text="Regresar", command=regresar, bg='#9E9CA1', fg='#2B282E')
+    btn_regresar.pack(side="top", padx=20, pady=10, fill=tk.X)
+
+    ventana.mainloop()
 
 '''
 def editar_paciente_historial(paciente1, id_historial):
