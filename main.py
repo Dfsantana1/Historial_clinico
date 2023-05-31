@@ -68,8 +68,14 @@ class Login:
                     usuario="p", telefono="9876543210", correo="john.doe@example.com",
                     fecha_nacimiento="2000-01-01")
 
+        paciente1 = Paciente(identificacion="2", nombre="John", genero="Hombre",
+                    direccion="Dirección de Ejemplo", contraseña="2",
+                    usuario="p", telefono="9876543210", correo="john.doe@example.com",
+                    fecha_nacimiento="2000-01-01")
+
 # Llamar a la función agregar_paciente
         agregar_paciente(paciente)
+        agregar_paciente(paciente1)
 
         historial = HistorialClinico(
     numero_documento="1",
@@ -88,12 +94,34 @@ class Login:
     medicamentos="Paracetamol",
     enfermedades_hereditarias="Diabetes",
     enfermedades_actuales="Hipertensión",
-    fecha_consulta="2023-05-20"
+    fecha_consulta="2023-05-31"
+)
+        
+        historial1 = HistorialClinico(
+    numero_documento="1",
+    nombre="Juan Pérez",
+    edad=35,
+    sexo="Hombre",
+    altura=175,
+    peso=70,
+    telefono="1234567890",
+    email="juan@example.com",
+    direccion="Calle Principal 123",
+    sintomas="Dolor de cabeza, fiebre",
+    fecha_inicio_sintomas="2023-05-15",
+    quejas="Malestar general",
+    alergias="Ninguna",
+    medicamentos="Paracetamol",
+    enfermedades_hereditarias="Diabetes",
+    enfermedades_actuales="Hipertensión",
+    fecha_consulta="2023-05-22"
 )
 
 
 
+
         agregar_historial(paciente.identificacion,historial)
+        agregar_historial(paciente1.identificacion,historial1)
       
    
 
