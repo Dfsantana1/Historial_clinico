@@ -36,6 +36,7 @@ class Paciente(Usuario):
         btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
         btn_mostrar_historial = ttk.Button(ventana_paciente, text="Ver Mi Historial", command=lambda: mostrar_paciente_historial(self.identificacion))
         btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
+        #ffooo
 
 
 
