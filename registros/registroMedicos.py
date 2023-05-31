@@ -13,7 +13,7 @@ def agregar_medico(medico):
             return
 
     registros_medicos.append(medico)
-    mostrar_mensaje("Registro Exitoso", "El médico ha sido registrado correctamente.")
+    #mostrar_mensaje("Registro Exitoso", "El médico ha sido registrado correctamente.")
 
 def obtener_medicos():
     return registros_medicos
