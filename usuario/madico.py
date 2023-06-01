@@ -47,10 +47,10 @@ class Medico(Usuario):
 
         ventana_doctor.mainloop()
         
-   
+    
     def ver_horario(self):
         ventana = tk.Toplevel()
-        ventana.title("Horario del Médico")
+        ventana.title("Horari del Médico")
         ventana.geometry("600x300")  # Ajusta el tamaño de la ventana según tus necesidades
 
         horario_medico = self.horario
@@ -210,7 +210,6 @@ class Medico(Usuario):
 
             # Crear instancia de HistorialClinico
             H = HistorialClinico(*datos)
-            #
 
             agregar_historial(usuario.identificacion,H)
 

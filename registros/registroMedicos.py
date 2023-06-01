@@ -33,22 +33,19 @@ def consultar_horario_medico(identificacion):
         if medico.identificacion == identificacion:
             return medico.horario
     return None
+""""
+def validar_disponibilidad_horario(medico,feha,hora):
 
-def validar_horario(dia,hora,medico):
-    for m in registros_medicos:
-        if m.identificacion == medico.identificacion:
-            for  horario in m.horario:
-                if ((horario.dia== dia) and horario.hora_inicio== hora):
-                    if(hora.disponibilodad==True):
-                        hora.disponibilidad= False
-                        return True
-    
-    return False
+"""
+
+def validar_disponibilidad_horario(id, dia, hora):
+        for registro in registros_medicos:
+            if registro.identificacion == id: 
+                for horario in registro.horario:  
+                    if horario.dia == dia and horario.hora_inicio == hora:
+                        if horario.disponible :
+                            horario.disponible = False
+                            return True 
+        return False
+
                 
-                    
-        
-                    
-
-
-
-
