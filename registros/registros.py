@@ -52,8 +52,23 @@ def mostrar_paciente_historial(id):
     ventana = tk.Toplevel()
     ventana.title("Historial del Paciente")
 
-    frame_historial = ttk.Frame(ventana)
-    frame_historial.pack(padx=10, pady=10)
+    frame_principal = ttk.Frame(ventana)
+    frame_principal.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
+
+    # Crear el lienzo de desplazamiento
+    lienzo = tk.Canvas(frame_principal)
+    lienzo.pack(side=tk.LEFT, fill=tk.BOTH, expand=True)
+
+    # Crear el scrollbar vertical
+    scrollbar = ttk.Scrollbar(frame_principal, orient=tk.VERTICAL, command=lienzo.yview)
+    scrollbar.pack(side=tk.RIGHT, fill=tk.Y)
+
+    # Configurar el lienzo para desplazamiento
+    lienzo.configure(yscrollcommand=scrollbar.set)
+
+    # Crear un nuevo marco dentro del lienzo
+    frame_historial = ttk.Frame(lienzo)
+    lienzo.create_window((0, 0), window=frame_historial, anchor=tk.NW)
 
     for paciente in registros_pacientes:
         if paciente.identificacion == id:
@@ -76,8 +91,32 @@ def mostrar_paciente_historial(id):
                 label_quejas = ttk.Label(frame_historial, text="Quejas: " + registro.quejas)
                 label_quejas.pack()
 
-                label_enfermedades = ttk.Label(frame_historial, text="Enfermedades Actuales: " + registro.enfermedades_actuales)
-                label_enfermedades.pack()
+                label_enfermedades_actuales = ttk.Label(frame_historial, text="Enfermedades Actuales: " + registro.enfermedades_actuales)
+                label_enfermedades_actuales.pack()
+
+                label_altura = ttk.Label(frame_historial, text="Altura: " + str(registro.altura))
+                label_altura.pack()
+
+                label_peso = ttk.Label(frame_historial, text="Peso: " + str(registro.peso))
+                label_peso.pack()
+
+                label_telefono = ttk.Label(frame_historial, text="Teléfono: " + registro.telefono)
+                label_telefono.pack()
+
+                label_email = ttk.Label(frame_historial, text="Email: " + registro.email)
+                label_email.pack()
+
+                label_direccion = ttk.Label(frame_historial, text="Dirección: " + registro.direccion)
+                label_direccion.pack()
+
+                label_alergias = ttk.Label(frame_historial, text="Alergias: " + registro.alergias)
+                label_alergias.pack()
+
+                label_medicamentos = ttk.Label(frame_historial, text="Medicamentos: " + registro.medicamentos)
+                label_medicamentos.pack()
+
+                label_enfermedades_hereditarias = ttk.Label(frame_historial, text="Enfermedades Hereditarias: " + registro.enfermedades_hereditarias)
+                label_enfermedades_hereditarias.pack()
 
                 ttk.Separator(frame_historial, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=5)
 
@@ -86,6 +125,10 @@ def mostrar_paciente_historial(id):
     else:
         label_no_encontrado = ttk.Label(frame_historial, text="No se encontró ningún paciente con el ID indicado: " + id)
         label_no_encontrado.pack()
+
+    # Configurar el desplazamiento del lienzo
+    frame_historial.update_idletasks()
+    lienzo.configure(scrollregion=lienzo.bbox("all"))
 
     ventana.mainloop()
 
