@@ -2,12 +2,14 @@ import tkinter as tk
 from tkinter import ttk
 import tkcalendar as tkcal 
 import re
+from citas import Cita
 from ventanas.mostrar import mostrar_mensaje
 from registros.registros import agregar_paciente,mostrar_paciente_historial
-from registros.registroMedicos import obtener_medicos
+from registros.registroMedicos import obtener_medicos,validar_horario
 from historial import HistorialClinico
 from usuario.usuario import Usuario
 import util.generic as utl
+from registros.registroCitas import agregar_cita
 
 
 class Paciente(Usuario):
@@ -66,11 +68,31 @@ class Paciente(Usuario):
             btn_ver_horario = ttk.Button(frame_medico, text="Ver Horario",command=medico.ver_horario)
             btn_ver_horario.pack(side=tk.LEFT, padx=5)
 
+            btn_ver_horario = ttk.Button(frame_medico, text="Solicitar cita",command=self.solicitarcita(medico))
+            btn_ver_horario.pack(side=tk.LEFT, padx=5)
+
             # Lógica para vincular el botón con la función para ver el horario del médico
 
             ventana.mainloop()
 
-    
+
+    def solicitarcita(self,medico):
+        for cita in self.citas_programadas:
+            input(f"Identificación: {self.identificacion}")
+            input(f"Fecha y Hora: {cita.fecha_hora}")
+            input(f"Paciente: {cita.paciente}")
+            input(f"Médico: {medico.nombre}")
+            #cita.id_medico=medico.identificacion 
+            input(f"Tipo de Cita: {cita.tipo_cita}")
+            input(f"Descripción: {cita.descripcion}")
+            print("--------------------")
+
+            if validar_horario(cita.dia,cita.hora,medico):
+                cita = Cita(cita.identificacion, cita.fecha_hora, cita.paciente, medico, cita.tipo_cita, cita.descripcion)
+                agregar_cita(cita)
+
+            else: print("elegi otra hora")
+        
 
     @staticmethod
 

@@ -210,6 +210,7 @@ class Medico(Usuario):
 
             # Crear instancia de HistorialClinico
             H = HistorialClinico(*datos)
+            #
 
             agregar_historial(usuario.identificacion,H)
 
