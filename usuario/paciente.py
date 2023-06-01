@@ -4,10 +4,13 @@ import tkcalendar as tkcal
 import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registros import agregar_paciente,mostrar_paciente_historial
-from registros.registroMedicos import obtener_medicos
+from registros.registroMedicos import obtener_medicos,validar_disponibilidad_horario
 from historial import HistorialClinico
 from usuario.usuario import Usuario
 import util.generic as utl
+from datetime import datetime
+from registros.registroCitas import guardar_cita, mostrar_citas
+from citas import Cita
 
 
 class Paciente(Usuario):
@@ -45,6 +48,61 @@ class Paciente(Usuario):
         ventana_paciente.mainloop()
 
 
+
+    
+
+
+
+    def agendar_cita(self, medico):
+        ventana_agendar = tk.Toplevel()
+        ventana_agendar.title("Agendamiento de citas")
+        ventana_agendar.geometry("600x300")  # Ajusta el tamaño de la ventana según tus necesidades
+
+        label_identificacion = ttk.Label(ventana_agendar, text="Identificación:")
+        label_identificacion.pack()
+
+        entry_identificacion = ttk.Entry(ventana_agendar)
+        entry_identificacion.pack()
+
+        label_dia = ttk.Label(ventana_agendar, text="Dia:")
+        label_dia.pack()
+
+        entry_dia = ttk.Entry(ventana_agendar)
+        entry_dia.pack()
+
+        label_hora = ttk.Label(ventana_agendar, text="Hora:")
+        label_hora.pack()
+
+        entry_hora = ttk.Entry(ventana_agendar)
+        entry_hora.pack()
+
+        label_medico = ttk.Label(ventana_agendar, text="Medico:")
+        label_medico.pack()
+
+        entry_medico = ttk.Entry(ventana_agendar)
+        entry_medico.pack()
+
+        label_tipo_cita = ttk.Label(ventana_agendar,  text="Tipo cita:")
+        label_tipo_cita.pack()
+
+        entry_tipo_cita = ttk.Entry(ventana_agendar)
+        entry_tipo_cita.pack()
+
+        btn_agendar = ttk.Button(ventana_agendar, text="Agendar", command=lambda: self.guardar_cita( entry_dia.get(), entry_hora.get(),medico,  entry_tipo_cita.get()))
+        btn_agendar.pack()
+
+        ventana_agendar.mainloop()
+
+    def guardar_cita(self, dia, hora, medico, tipo_cita):
+        # Lógica para validar los datos ingresados y guardar la cita en el sistema de agendamiento
+        if validar_disponibilidad_horario(medico.identificacion, dia, hora):
+            nueva_cita = Cita(self.identificacion, dia, hora, self.nombre, medico, tipo_cita, "nula")
+            guardar_cita(nueva_cita)
+            mostrar_citas()
+        else:
+            print("Horario no disponible")
+    
+
     def ver_medicos(self):
         ventana = tk.Toplevel()  # Crear una nueva ventana (pestaña)
 
@@ -54,7 +112,7 @@ class Paciente(Usuario):
             nombre = medico.nombre
             especialidad = medico.especialidad
 
-            # Crear un frame para agrupar el nombre, la especialidad y el botón
+            # Crear un frame para agrupar el nombre, la especialidad y los botones
             frame_medico = ttk.Frame(ventana)
             frame_medico.pack(pady=10)
 
@@ -63,18 +121,23 @@ class Paciente(Usuario):
             label_nombre_especialidad.pack(side=tk.LEFT, padx=5)
 
             # Botón "Ver Horario"
-            btn_ver_horario = ttk.Button(frame_medico, text="Ver Horario",command=medico.ver_horario)
+            btn_ver_horario = ttk.Button(frame_medico, text="Ver Horario", command=medico.ver_horario)
             btn_ver_horario.pack(side=tk.LEFT, padx=5)
 
-            # Lógica para vincular el botón con la función para ver el horario del médico
+            # Botón "Agendar Cita"
+            btn_agendar_cita = ttk.Button(frame_medico, text="Agendar Cita", command=lambda medico=medico: self.agendar_cita(medico))
+            btn_agendar_cita.pack(side=tk.LEFT, padx=5)
 
-            ventana.mainloop()
+        ventana.mainloop()
 
-    
+    def ventana_agendar_cita(self, medico):
+        ventana_agendar = tk.Toplevel()  # Crear una nueva ventana para agendar la cita
 
-    @staticmethod
+        # Lógica para crear los elementos necesarios para agendar la cita, como etiquetas, campos de entrada, botones, etc.
 
+        # Lógica para guardar la cita en el sistema de agendamiento (puedes utilizar la función "guardar_cita" mencionada anteriormente)
 
+        ventana_agendar.mainloop()
 
 
 
