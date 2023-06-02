@@ -24,6 +24,7 @@ def mostrar_citas():
         print(f"Hora: {cita.hora}")
         print(f"Medico: {cita.medico.nombre}")
         print(f"Tipo cita: {cita.tipo_cita}")
+        print(f"Descripcion: {cita.descripcion}")
 
         # Aquí puedes mostrar otros atributos de la cita según tu implementación
         print("---")
