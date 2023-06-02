@@ -4,6 +4,7 @@ import re
 from historial import HistorialClinico
 from ventanas.mostrar import mostrar_mensaje
 from registros.registroMedicos import agregar_medico
+from registros.registroCitas import mostrar_citas
 from registros.registros import obtener_registros_pacientes,obtener_paciente_por_id,mostrar_paciente_historial, editar_paciente_historial,agregar_historial
 from usuario.usuario import Usuario
 import util.generic as utl
@@ -34,15 +35,16 @@ class Medico(Usuario):
         mensaje_bienvenida = tk.Label(ventana_doctor, text=f"Bienvenido Médico {self.nombre}", font=("Arial", 16), bg="#F0F8FF", fg="#000000")
         mensaje_bienvenida.pack(pady=10)
 
-        for paciente in lista_pacientes:
-            print(paciente.nombre)
-            print(paciente.identificacion)
+        
 
 
         btn_buscar_paciente = ttk.Button(ventana_doctor, text="Buscar Paciente", command=self.buscar_paciente)
         btn_buscar_paciente.pack(pady=10, padx=20, fill=tk.X)
 
         btn_ver_horario = ttk.Button(ventana_doctor, text="Ver Horario", command=self.ver_horario)
+        btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
+
+        btn_ver_horario = ttk.Button(ventana_doctor, text="Ver Citas", command=mostrar_citas)
         btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
 
         ventana_doctor.mainloop()

@@ -10,7 +10,7 @@ from historial import HistorialClinico
 from usuario.usuario import Usuario
 import util.generic as utl
 from datetime import datetime
-from registros.registroCitas import guardar_cita, mostrar_citas
+from registros.registroCitas import guardar_cita, mostrar_mis_citas
 from citas import Cita
 
 
@@ -32,13 +32,17 @@ class Paciente(Usuario):
         ventana_paciente.geometry("1600x900")
         ventana_paciente.configure(bg="#CBDEF6")
 
-        mensaje_bienvenida = tk.Label(ventana_paciente, text=f"Bienvenido Paciente", font=("Arial", 16), bg="#F0F8FF", fg="#000000")
+        mensaje_bienvenida = tk.Label(ventana_paciente, text=f"Bienvenido Paciente {self.nombre}", font=("Arial", 16), bg="#F0F8FF", fg="#000000")
         mensaje_bienvenida.pack(pady=10)
 
         # Botones
         btn_ver_horario = ttk.Button(ventana_paciente, text="Ver Medicos ", command=self.ver_medicos)
         btn_ver_horario.pack(pady=10, padx=20, fill=tk.X)
+
         btn_mostrar_historial = ttk.Button(ventana_paciente, text="Ver Mi Historial", command=lambda: mostrar_paciente_historial(self.identificacion))
+        btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
+
+        btn_mostrar_historial = ttk.Button(ventana_paciente, text="Ver Mis Citas", command=lambda: mostrar_mis_citas(self.identificacion))
         btn_mostrar_historial.pack(pady=10, padx=20, fill=tk.X)
 
 
@@ -95,9 +99,8 @@ class Paciente(Usuario):
         if validar_disponibilidad_horario(medico.identificacion, dia, hora):
             nueva_cita = Cita(self.identificacion, dia, hora, self.nombre, medico, tipo_cita, descripcion)
             guardar_cita(nueva_cita)
-            mostrar_citas()
         else:
-            print("Horario no disponible")
+            mostrar_mensaje("Horario no disponible")
     
 
     def ver_medicos(self):

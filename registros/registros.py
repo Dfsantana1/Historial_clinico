@@ -38,14 +38,12 @@ def validar_credenciales(usuario, contraseña):
 def agregar_historial(id, registro):
     for paciente in registros_pacientes:
         if paciente.identificacion == id:
-            print(registro.id_historial)
             registro.id_historial = len(paciente.historial_clinico) + 1
             paciente.historial_clinico.append(registro)
-            print("registro exitoso")
-            print(registro.id_historial)
+            mostrar_mensaje("Registro Exitoso","Registro Agregado Correctamente")
             return   # Indicar que se agregó el historial clínico correctamente
     
-    print("registro fallido") # Si no se encontró ningún paciente con el ID indicado
+    mostrar_mensaje("Error","registro fallido") # Si no se encontró ningún paciente con el ID indicado
 
 
 def mostrar_paciente_historial(id):
