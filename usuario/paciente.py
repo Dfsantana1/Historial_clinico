@@ -1,6 +1,7 @@
 import tkinter as tk
 from tkinter import ttk
 import tkcalendar as tkcal 
+from tkcalendar import Calendar
 import re
 from ventanas.mostrar import mostrar_mensaje
 from registros.registros import agregar_paciente,mostrar_paciente_historial
@@ -58,29 +59,19 @@ class Paciente(Usuario):
         ventana_agendar.title("Agendamiento de citas")
         ventana_agendar.geometry("600x300")  # Ajusta el tamaño de la ventana según tus necesidades
 
-        label_identificacion = ttk.Label(ventana_agendar, text="Identificación:")
-        label_identificacion.pack()
 
-        entry_identificacion = ttk.Entry(ventana_agendar)
-        entry_identificacion.pack()
-
-        label_dia = ttk.Label(ventana_agendar, text="Dia:")
+        label_dia = ttk.Label(ventana_agendar, text="Día:")
         label_dia.pack()
 
-        entry_dia = ttk.Entry(ventana_agendar)
-        entry_dia.pack()
+        dias_semana = ["Lunes", "Martes", "Miércoles", "Jueves", "Viernes"]
+        selected_dia = ttk.Combobox(ventana_agendar, values=dias_semana)
+        selected_dia.pack()
 
-        label_hora = ttk.Label(ventana_agendar, text="Hora:")
+        label_hora = ttk.Label(ventana_agendar, text="Hora (Formato HH:MM):")
         label_hora.pack()
 
         entry_hora = ttk.Entry(ventana_agendar)
         entry_hora.pack()
-
-        label_medico = ttk.Label(ventana_agendar, text="Medico:")
-        label_medico.pack()
-
-        entry_medico = ttk.Entry(ventana_agendar)
-        entry_medico.pack()
 
         label_tipo_cita = ttk.Label(ventana_agendar,  text="Tipo cita:")
         label_tipo_cita.pack()
@@ -88,15 +79,21 @@ class Paciente(Usuario):
         entry_tipo_cita = ttk.Entry(ventana_agendar)
         entry_tipo_cita.pack()
 
-        btn_agendar = ttk.Button(ventana_agendar, text="Agendar", command=lambda: self.guardar_cita( entry_dia.get(), entry_hora.get(),medico,  entry_tipo_cita.get()))
+        label_descripcion = ttk.Label(ventana_agendar,  text=" Descripcion :")
+        label_descripcion.pack()
+
+        entry_descripcion = ttk.Entry(ventana_agendar)
+        entry_descripcion.pack() 
+
+        btn_agendar = ttk.Button(ventana_agendar, text="Agendar", command=lambda: self.guardar_cita( selected_dia.get(), entry_hora.get(),medico,  entry_tipo_cita.get(), entry_descripcion.get()))
         btn_agendar.pack()
 
         ventana_agendar.mainloop()
 
-    def guardar_cita(self, dia, hora, medico, tipo_cita):
+    def guardar_cita(self, dia, hora, medico, tipo_cita, descripcion):
         # Lógica para validar los datos ingresados y guardar la cita en el sistema de agendamiento
         if validar_disponibilidad_horario(medico.identificacion, dia, hora):
-            nueva_cita = Cita(self.identificacion, dia, hora, self.nombre, medico, tipo_cita, "nula")
+            nueva_cita = Cita(self.identificacion, dia, hora, self.nombre, medico, tipo_cita, descripcion)
             guardar_cita(nueva_cita)
             mostrar_citas()
         else:
