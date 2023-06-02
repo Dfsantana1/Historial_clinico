@@ -21,25 +21,9 @@ class Cita:
         self.descripcion = descripcion
 
 
-    citas_programadas = []  # Lista para almacenar las citas programadas
 
     
-    def agendar_cita(identificacion, dia, hora , paciente, medico, tipo_cita, descripcion):
-        # Validar que la fecha y hora sean válidas
-        try:
-            fecha_hora = datetime.strptime(fecha_hora, "%Y-%m-%d %H:%M")
-        except ValueError:
-            print("La fecha y hora ingresadas no son válidas.")
-            return
 
-        # Crear una instancia de la clase Cita con los datos proporcionados
-        cita = Cita(identificacion, fecha_hora, paciente, medico, tipo_cita, descripcion)
 
-        # Agregar la cita a la lista de citas programadas
-        Cita.citas_programadas.append(cita)
 
-        print("Cita agendada exitosamente.")
-
-# Ejemplo de uso
-        Cita.agendar_cita("123456789", "2023-06-01 10:00", "Juan Perez", "Dr. Martinez", "Consulta", "Consulta general")
 
