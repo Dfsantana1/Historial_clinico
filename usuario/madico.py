@@ -52,7 +52,7 @@ class Medico(Usuario):
     
     def ver_horario(self):
         ventana = tk.Toplevel()
-        ventana.title("Horari del Médico")
+        ventana.title("Horario del Médico")
         ventana.geometry("600x300")  # Ajusta el tamaño de la ventana según tus necesidades
 
         horario_medico = self.horario

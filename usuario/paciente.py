@@ -20,9 +20,6 @@ class Paciente(Usuario):
         self.fecha_nacimiento = fecha_nacimiento 
         self.historial_clinico =[]
 
-
-
-
     def agregar_registro_historial(self, registro):
         self.historial_clinico.agregar_registro(registro)
 
@@ -71,11 +68,12 @@ class Paciente(Usuario):
         selected_dia = ttk.Combobox(ventana_agendar, values=dias_semana)
         selected_dia.pack()
 
-        label_hora = ttk.Label(ventana_agendar, text="Hora (Formato HH:MM):")
-        label_hora.pack()
+        label_Horas = ttk.Label(ventana_agendar, text="Hora:")
+        label_Horas.pack()
 
-        entry_hora = ttk.Entry(ventana_agendar)
-        entry_hora.pack()
+        horas_semana = ["07:00", "08:00", "09:00", "10:00", "11:00", "12:00", "14:00", "15:00", "16:00", "17:00"]
+        selected_hora = ttk.Combobox(ventana_agendar, values=horas_semana)
+        selected_hora.pack()
 
         label_tipo_cita = ttk.Label(ventana_agendar,  text="Tipo cita:")
         label_tipo_cita.pack()
@@ -89,7 +87,7 @@ class Paciente(Usuario):
         entry_descripcion = ttk.Entry(ventana_agendar)
         entry_descripcion.pack() 
 
-        btn_agendar = ttk.Button(ventana_agendar, text="Agendar", command=lambda: self.guardar_cita( selected_dia.get(), entry_hora.get(),medico,  entry_tipo_cita.get(), entry_descripcion.get()))
+        btn_agendar = ttk.Button(ventana_agendar, text="Agendar", command=lambda: self.guardar_cita( selected_dia.get(), selected_hora.get(),medico,  entry_tipo_cita.get(), entry_descripcion.get()))
         btn_agendar.pack()
 
         ventana_agendar.mainloop()
@@ -100,8 +98,8 @@ class Paciente(Usuario):
             nueva_cita = Cita(self.identificacion, dia, hora, self.nombre, medico, tipo_cita, descripcion)
             guardar_cita(nueva_cita)
         else:
-            mostrar_mensaje("Horario no disponible")
-    
+            mostrar_mensaje("error ","Horario no disponible")
+
 
     def ver_medicos(self):
         ventana = tk.Toplevel()  # Crear una nueva ventana (pestaña)
@@ -138,7 +136,7 @@ class Paciente(Usuario):
         # Lógica para guardar la cita en el sistema de agendamiento (puedes utilizar la función "guardar_cita" mencionada anteriormente)
 
         ventana_agendar.mainloop()
-
+    
 
 
     def registro_paciente():
