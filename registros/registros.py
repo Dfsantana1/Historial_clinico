@@ -44,6 +44,10 @@ def agregar_historial(id, registro):
 
 
 def mostrar_paciente_historial(id):
+
+    def regresar():
+        ventana.destroy()
+
     ventana = tk.Toplevel()
     ventana.title("Historial del Paciente")
 
@@ -75,6 +79,9 @@ def mostrar_paciente_historial(id):
 
             label_historial = ttk.Label(frame_historial, text="Historial clínico:")
             label_historial.pack(pady=5)
+
+            btn_regresar = tk.Button(ventana, text="Regresar", command=regresar, bg='#9E9CA1', fg='#2B282E')
+            btn_regresar.pack(side="top", padx=20, pady=10, fill=tk.X)
 
             for registro in paciente.historial_clinico:
                 label_fecha_consulta = ttk.Label(frame_historial, text="Fecha de Consulta: " + registro.fecha_consulta)
@@ -116,7 +123,7 @@ def mostrar_paciente_historial(id):
                 ttk.Separator(frame_historial, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=5)
 
             break
-    
+
     else:
         label_no_encontrado = ttk.Label(frame_historial, text="No se encontró ningún paciente con el ID indicado: " + id)
         label_no_encontrado.pack()
