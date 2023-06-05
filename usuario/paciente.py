@@ -97,6 +97,7 @@ class Paciente(Usuario):
         if validar_disponibilidad_horario(medico.identificacion, dia, hora):
             nueva_cita = Cita(self.identificacion, dia, hora, self.nombre, medico, tipo_cita, descripcion)
             guardar_cita(nueva_cita)
+            self.ventana_agendar.mainloop()
         else:
             mostrar_mensaje("error ","Horario no disponible")
 
@@ -128,7 +129,7 @@ class Paciente(Usuario):
 
         ventana.mainloop()
 
-    def ventana_agendar_cita(self, medico):
+    '''def ventana_agendar_cita(self, medico):
         ventana_agendar = tk.Toplevel()  # Crear una nueva ventana para agendar la cita
 
         # Lógica para crear los elementos necesarios para agendar la cita, como etiquetas, campos de entrada, botones, etc.
@@ -137,7 +138,7 @@ class Paciente(Usuario):
 
         ventana_agendar.mainloop()
     
-
+'''
 
     def registro_paciente():
         ventana_registro_paciente = tk.Toplevel()
