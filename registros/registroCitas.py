@@ -65,7 +65,7 @@ def mostrar_citas():
 
             ttk.Separator(frame_citas, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=5)
 
-    # Configurar el desplazamiento del lienzo
+
     frame_citas.update_idletasks()
     lienzo.configure(scrollregion=lienzo.bbox("all"))
 
@@ -120,12 +120,31 @@ def mostrar_mis_citas(id):
 
                 ttk.Separator(frame_citas, orient=tk.HORIZONTAL).pack(fill=tk.X, pady=5)
 
+                btn_eliminar = ttk.Button(frame_citas, text="Eliminar", command=lambda cita=cita: eliminar_cita(cita))
+                btn_eliminar.pack()
+
         # Configurar el desplazamiento del lienzo
         frame_citas.update_idletasks()
         lienzo.configure(scrollregion=lienzo.bbox("all"))
 
         ventana.mainloop()
 
+def eliminar_cita(cita):
+    ventana = tk.Toplevel()
+    # Eliminar la cita de la lista de citas
+    citas.remove(cita)
+
+    frame_principal = ttk.Frame(ventana)
+    lienzo = tk.Canvas(frame_principal)
+    frame_citas = ttk.Frame(lienzo)
+
+    # Destruir todos los widgets dentro del frame de la cita
+    for widget in frame_citas.winfo_children():
+        widget.destroy()
+
+    # Volver a mostrar las citas restantes
+    ventana.destroy()
+    mostrar_mis_citas(id)
 
 def validar_disponibilidad_horario(medico, dia, hora):
         for cita in citas:

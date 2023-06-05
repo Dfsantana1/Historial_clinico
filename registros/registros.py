@@ -6,9 +6,6 @@ from historial import HistorialClinico
 import util.generic as utl
 registros_pacientes = []
 
-
-
-
 def agregar_paciente(paciente):
     for p in registros_pacientes:
         if p.identificacion == paciente.identificacion:
@@ -246,41 +243,6 @@ def editar_paciente_historial(paciente1, id_historial):
     btn_regresar.pack(side="top", padx=20, pady=10, fill=tk.X)
 
     ventana.mainloop()
-
-'''
-def editar_paciente_historial(paciente1, id_historial):
-    for paciente in registros_pacientes:
-        if paciente.identificacion == paciente1:
-            for indice, registro in enumerate(paciente.historial_clinico):
-                if id_historial == registro.id_historial:
-                    historial = HistorialClinico(
-                        numero_documento="1",
-                        nombre="Juan Pérez",
-                        edad=35,
-                        sexo="Hombre",
-                        altura=175,
-                        peso=70,
-                        telefono="1234567890",
-                        email="juan@example.com",
-                        direccion="Calle Principal 123",
-                        sintomas="Dolor de cabeza, fiebre",
-                        fecha_inicio_sintomas="2023-05-15",
-                        quejas="Malestar general",
-                        alergias="Ninguna",
-                        medicamentos="Paracetamol",
-                        enfermedades_hereditarias="Diabetes",
-                        enfermedades_actuales="pipi",
-                        fecha_consulta="2023-05-20"
-                    )
-                    paciente.historial_clinico[indice] = historial
-                    print("Registro actualizado")
-                    break
-            else:
-                print("No se encontró el historial con el ID proporcionado")
-            break
-    else:
-        print("No se encontró el paciente con la identificación proporcionada")
-'''
 
 def obtener_registros_pacientes():
     return registros_pacientes
