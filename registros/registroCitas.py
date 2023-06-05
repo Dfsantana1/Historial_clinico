@@ -4,8 +4,10 @@ import tkinter.ttk as ttk
 
 citas = []
 
+
 def ver_mis_citas(id):
     mis_citas=[]
+
     for cita in citas:
         if cita.identificacion==id:
             mis_citas.append(cita)
@@ -21,7 +23,7 @@ def guardar_cita(cita):
 def mostrar_citas():
     ventana = tk.Toplevel()
     ventana.title("Mostrar Citas")
-
+    
     frame_principal = ttk.Frame(ventana)
     frame_principal.pack(padx=10, pady=10, fill=tk.BOTH, expand=True)
 
@@ -43,6 +45,7 @@ def mostrar_citas():
     if len(citas) == 0:
         label_no_citas = ttk.Label(frame_citas, text="No hay citas guardadas.")
         label_no_citas.pack()
+
     else:
         for cita in citas:
             label_identificacion = ttk.Label(frame_citas, text="Identificación: " + cita.identificacion)
