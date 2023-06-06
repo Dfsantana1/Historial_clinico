@@ -60,25 +60,6 @@ class Login:
         usuario = self.entry_usuario.get()
         contraseña = self.entry_contraseña.get()
 
-        medico = Medico("12", "12", "12", "12", "1", "m", "12", "12", "mk")
-        agregar_medico(medico)
-
-        paciente = Paciente(identificacion="1", nombre="John Doe", genero="Hombre",
-                    direccion="Dirección de Ejemplo", contraseña="1",
-                    usuario="p", telefono="9876543210", correo="john.doe@example.com",
-                    fecha_nacimiento="2000-01-01")
-
-        paciente1 = Paciente(identificacion="2", nombre="John", genero="Hombre",
-                    direccion="Dirección de Ejemplo", contraseña="2",
-                    usuario="p", telefono="9876543210", correo="john.doe@example.com",
-                    fecha_nacimiento="2000-01-01")
-
-# Llamar a la función agregar_paciente
-        agregar_paciente(paciente)
-        agregar_paciente(paciente1)
-
-      
-   
 
         medico_valido = validar_credencialesM(usuario, contraseña)
         if isinstance(medico_valido, Medico):
